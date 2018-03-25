@@ -6,7 +6,7 @@ import ReactDOM,{render}  from "react-dom";
 
 import "./utils/flexible.js";
 
-import "./one";
+import "./footprint";
 
 import Head from "./utils";
 import "../styles/index.less"
