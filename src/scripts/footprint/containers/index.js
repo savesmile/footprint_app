@@ -7,6 +7,7 @@ import Old from "./old"
 import New from "./new"
 import My from "./my"
 import App from "./app"
+import Register from "../components/register"
 import Forget_pwd from "../components/forget_pwd"
 
 export default class Layout extends Component{
@@ -20,8 +21,8 @@ export default class Layout extends Component{
                     <Route path="old" component={Old}/>
                     <Route path="new" component={New}/>
                     <Route path="my" component={My}/>
-                    <Route path="/forget_pwd" component={Forget_pwd}/>
-                   {/*<Route path="/registerd" component={}/>*/}
+                    <Route path="forget_pwd" component={Forget_pwd}/>
+                   <Route path="/register" component={Register}/>
                 </Route>
             </Router>
         )

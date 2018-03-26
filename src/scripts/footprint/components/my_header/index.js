@@ -1,9 +1,5 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import { Link, hashHistory } from "react-router"
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-
+import React, {Component} from "react"
+import {connect} from "react-redux"
 
 
 /* axios.defaults.baseURL = "http://39.106.19.127:3000" */
