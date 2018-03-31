@@ -37,45 +37,45 @@ export default class Forget_pwd extends Component {
     };
 
     handleSubmit = () => {
-        console.log(this.refs.userName.value);
+        console.log(this.refs.username.value);
         event.preventDefault();
 
-    }
+    };
 
     render() {
         const {dispatch} = this.props;
 
         return (
             <div className="forgetPwd">
-                <Back/>
+                <Back backTo="my" header="reset password"/>
                 <div className="mdui-container">
                     <div className="mdui-textfield mdui-textfield-floating-label">
                         <i className="mdui-icon material-icons">account_circle</i>
                         <label className="mdui-textfield-label">Username</label>
-                        <input className="mdui-textfield-input" type="text" required name="userName" ref="userName"/>
+                        <input className="mdui-textfield-input" type="text" required ref="username"/>
                     </div>
                     <div className="mdui-textfield mdui-textfield-floating-label authCode">
                         <i className="mdui-icon material-icons">message</i>
-                        <label className="mdui-textfield-label">authCode</label>
-                        <input className="mdui-textfield-input" type="text" required name="authCode" ref="authCode"/>
-                        <div className="mdui-textfield-error">用户名已存在</div>
+                        <label className="mdui-textfield-label">Authcode</label>
+                        <input className="mdui-textfield-input" type="text" required ref="authCode"/>
+
                     </div>
                     <div className="mdui-textfield mdui-textfield-floating-label">
                         <i className="mdui-icon material-icons">lock</i>
-                        <label className="mdui-textfield-label">new_password</label>
-                        <input className="mdui-textfield-input" type="text" required name="pwd" ref={"pwd"} pattern="\d{3}"/>
-                        <div className="mdui-textfield-error">用户名已存在</div>
+                        <label className="mdui-textfield-label">New_password</label>
+                        <input className="mdui-textfield-input" type="text" required ref={"pwd"}
+                               pattern="\d{3}"/>
                     </div>
                 </div>
 
                 <button className="mdui-btn mdui-btn-raised mdui-ripple
-                mdui-color-theme-accent mdui-center mdui-color-grey-300"
-                onClick={this.handleSubmit}>
-                    <p><strong>确 认 重 置</strong></p>
+                mdui-color-theme-accent mdui-center mdui-color-grey-300" disabled
+                        onClick={this.handleSubmit}>
+                    <p><strong>reset</strong></p>
                 </button>
                 <button className="authCodeBtn mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-grey-300
                              mdui-color-theme-accent mdui-ripple mdui-center"
-                        style={{top:"163px"}}
+                        style={{top: "163px"}}
                         onClick={this.authCodeBtnClick}>
                     验 证 码
                 </button>

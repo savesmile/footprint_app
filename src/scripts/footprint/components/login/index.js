@@ -41,23 +41,23 @@ export default class Login extends Component {
                         <div className="mdui-textfield mdui-textfield-floating-label">
                             <i className="mdui-icon material-icons">account_circle</i>
                             <label className="mdui-textfield-label">Username</label>
-                            <input className="mdui-textfield-input" type="text" required name="userName"/>
+                            <input className="mdui-textfield-input" type="text" required />
                         </div>
                         <div className="mdui-textfield mdui-textfield-floating-label">
                             <i className="mdui-icon material-icons">lock</i>
                             <label className="mdui-textfield-label">Password</label>
-                            <input className="mdui-textfield-input" type="text" required name="passWord"/>
+                            <input className="mdui-textfield-input" type="text" required />
                         </div>
                        
                     </div>
                    
                     <button className="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center mdui-color-grey-300">
-                        <p><strong>登 录</strong></p>
+                        <p><strong>log in</strong></p>
                     </button>
                 </form>
                 <div className="loginP mdui-center">
-                    <Link className="mdui-float-left" to={"/forget_pwd"}><small>忘记密码？</small></Link>
-                    <Link className="mdui-float-right" to={"/register"}><small>注 册</small></Link>
+                    <Link className="mdui-float-left" to={"/forget_pwd"}><small>forget password？</small></Link>
+                    <Link className="mdui-float-right" to={"/register"}><small>registered</small></Link>
                 </div>
             </div>
         )

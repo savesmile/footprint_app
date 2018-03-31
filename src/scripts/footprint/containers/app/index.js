@@ -1,33 +1,35 @@
-import React,{Component} from "react"
+import React, {Component} from "react"
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { stop } from "pretty-error";
 
 export default class App extends Component{
-    
+    constructor(props, context) {
+        super(props, context);
+    };
+    componentWillMount() {
+        document.body.style.margin = "0px";
+        // 这是防止页面被拖拽
+        document.body.addEventListener('touchmove', (ev) => {
+            ev.preventDefault();
+        });
+    };
    
     render(){
         return(
-            <div className="moveIn app" ref="app">
             <ReactCSSTransitionGroup
-                transitionName = {
-                    {
-                        enter: 'enter',
-                        leave: 'leave',
-                    }
-                }
-                transitionLeave={true}
-                transitionEnter={true}
-                transitionLeaveTimeout = {800}
-                transitionEnterTimeout = {800}
+                transitionName="transitionWrapper"
+                component="div"
+                className="transitionWrapper"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}>
+                <div className="twDiv"
+                    key={this.props.location.pathname}
+                     style={{position:"absolute", width: "100%"}}
                 >
               
                     {this.props.children}
+                </div>
                 </ReactCSSTransitionGroup>
-           
-           
-        </div>
-           
         )
     }
 }
