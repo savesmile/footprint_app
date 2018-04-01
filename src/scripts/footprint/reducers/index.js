@@ -1,8 +1,9 @@
+import FootPrint from "../containers/myfoot";
+
 var initState = {
     footList:[
-        {path:"/his",txt:"HIS",icon:"beach_access"},
-        {path:"/old",txt:"OLD",icon:"collections"},
-        {path:"/new",txt:"NEW",icon:"camera_alt"},
+        {path:"/his",txt:"HI",icon:"beach_access"},
+        {path:"/my_foot",txt:"FP",icon:"collections"},
         {path:"/my",txt:"MY",icon:"people"},
     ],
     one:[],

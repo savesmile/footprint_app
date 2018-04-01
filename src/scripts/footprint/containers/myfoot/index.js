@@ -14,7 +14,7 @@ import Foot from "../../components/foot"
 )
 
 
-export default class New extends Component {
+export default class MyFoot extends Component {
     constructor(props) {
         super(props);
         this.state = {

@@ -1,4 +1,3 @@
-
 var app = document.getElementById("app");
 
 import React from "react"
@@ -7,16 +6,15 @@ import {render} from "react-dom"
 import store from "./store"
 
 import Layout from "./containers"
-
 import {Provider} from "react-redux"
- import "../utils/mdui.min.js"
+import "../utils/mdui.min.js"
 import "./containers"
 
-var hotRender = ()=>{
+var hotRender = () => {
     render(
-       <Provider store={store}>
-            <Layout/>
-       </Provider>,
+        <Provider store={store}>
+                <Layout/>
+        </Provider>,
         app
     )
 }
