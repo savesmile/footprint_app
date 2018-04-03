@@ -8,6 +8,7 @@ import My from "./my"
 import App from "./app"
 import Register from "../components/register"
 import Forget_pwd from "../components/forget_pwd"
+import Detail from "../components/detail"
 import Setting from "./my/setting"
 
 export default class Layout extends Component {
@@ -23,6 +24,7 @@ export default class Layout extends Component {
                     <Route path="forget_pwd" component={Forget_pwd}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/setting" component={Setting}/>
+                    <Route path="/detail/:id" component={Detail}/>
                 </Route>
             </Router>
         )

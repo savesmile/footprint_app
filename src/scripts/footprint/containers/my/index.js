@@ -58,12 +58,11 @@ export default class My extends Component {
                             <Link to="setting ">
                                 <i className="mdui-icon material-icons">settings</i>
                             </Link>
-                            <div className="avatar mdui-center"
-                                 style={{background:avatorPic}}>
+                            <div className="avatar mdui-center">
                                 <img className="mdui-img-circle" src={avatorPic}/>
                             </div>
                             <div className="nickname mdui-center">
-                                <p className="nc">这是昵称 <i className="sex"> ♂ </i></p>
+                                <p className="nc">这是昵称 <div className="sex"> ♂ </div></p>
                             </div>
                         </div>
                     </div>
@@ -85,13 +84,6 @@ export default class My extends Component {
                                 <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
                             </li>
                             <hr/>
-                            <li className="mdui-list-item mdui-ripple">
-                                <div className="mdui-list-item-content">
-                                    <i className="mdui-list-item-icon mdui-icon material-icons">bookmark_border</i>
-                                    <p className="list-p">收藏</p>
-                                </div>
-                                <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
-                            </li>
                             <hr/>
                             <li className="mdui-list-item mdui-ripple">
                                 <div className="mdui-list-item-content">

@@ -5,6 +5,8 @@ import avatorPic from "../../../../assets/images/avator1.png";
 import testPic from "../../../../assets/images/card.jpg";
 
 import {Tabs} from 'antd';
+import ExamplePic from "../../../../assets/images/example.jpg"
+import ExamplePic2 from "../../../../assets/images/example2.jpg"
 import {get_one, get_update_detail, get_user_detail, get_one_detail} from "../../actions"
 import axios from "axios";
 
@@ -70,7 +72,6 @@ export default class His extends Component {
         var total = 667;
         var scrollTop = document.scrollingElement.scrollTop;
         var height = document.body.scrollHeight;
-        console.log(total, scrollTop, height);
 
         if (total + scrollTop >= height) {
             console.log("加载更多数据 加载")
@@ -111,7 +112,7 @@ export default class His extends Component {
                             <div className="mdui-card-header-title">昵称:xxx</div>
                             <div className="mdui-card-header-subtitle">2018-03-30 15:26:44</div>
                         </div>
-                        <img src={testPic}/>
+                        <img src={ExamplePic}/>
                         <div className="mdui-card-media-covered mdui-card-media-covered-transparent">
                             <div className="mdui-card-primary">
                                 <div className="mdui-card-primary-title">澳洲之旅</div>
@@ -131,8 +132,8 @@ export default class His extends Component {
                             <div className="mdui-card-header-title">昵称:xxx</div>
                             <div className="mdui-card-header-subtitle">2018-03-30 15:26:44</div>
                         </div>
-                        <img src={testPic}/>
-                        <div className="mdui-card-media-covered mdui-card-media-covered-transparent">
+                        <img src={ExamplePic2}/>
+                        <div className="mdui-card-media-covered ">
                             <div className="mdui-card-primary">
                                 <div className="mdui-card-primary-title">澳洲之旅</div>
                                 <div className="mdui-card-primary-subtitle">cccccccccccccccccc</div>
