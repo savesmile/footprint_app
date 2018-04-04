@@ -10,6 +10,9 @@ import Register from "../components/register"
 import Forget_pwd from "../components/forget_pwd"
 import Detail from "../components/detail"
 import Setting from "./my/setting"
+import Focus from "../components/focus"
+import Messages from "../components/message";
+
 
 export default class Layout extends Component {
     render() {
@@ -19,12 +22,14 @@ export default class Layout extends Component {
                 <Route path="/" component={App}>
                     <IndexRedirect to="/his"/>
                     <Route path="his" component={His}/>
-                    <Route path="my_foot" component={MyFoot}/>
+                    <Route path="my_foot/:uid" component={MyFoot}/>
                     <Route path="my" component={My}/>
                     <Route path="forget_pwd" component={Forget_pwd}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/setting" component={Setting}/>
-                    <Route path="/detail/:id" component={Detail}/>
+                    <Route path="/detail" component={Detail}/>
+                    <Route path="/focus" component={Focus}/>
+                    <Route path="/messages" component={Messages}/>
                 </Route>
             </Router>
         )

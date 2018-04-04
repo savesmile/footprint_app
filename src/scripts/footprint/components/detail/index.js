@@ -14,13 +14,20 @@ import Foot from "../foot"
 export default class Detail extends Component {
     constructor(props) {
         super(props);
+        var {userId,articleId} = this.props.location.state;
         this.state = {
             title: "Canada",
-            componentState: false
-        }
+            componentState: false,
+            articleId:articleId,
+            userId:userId
+        };
+
     }
 
-
+    componentWillMount() {
+       //此处请求带articleId 的文章详情
+        console.log(this.state)
+    }
     componentClick = () => {
         var cs = !this.state.componentState;
         this.setState({
@@ -134,7 +141,7 @@ export default class Detail extends Component {
 
         return (
             <div className="foot-detail">
-                <Back backTo="my_foot" header={this.state.title}/>
+                <Back backTo={"my_foot/"+this.state.userId} header={this.state.title}/>
                 <div className="mdui-container">
                     <div ref="detail">
                         <div className="detail-foot">

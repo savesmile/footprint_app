@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Radio } from 'antd';
+import {Modal, Form, Input, Radio} from 'antd';
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import Uploade from "../upload"
@@ -9,8 +9,9 @@ const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         render() {
-            const { visible, onCancel, onCreate, form } = this.props;
-            const { getFieldDecorator } = form;
+            const {visible, onCancel, onCreate, form, uploadMethod} = this.props;
+            const {getFieldDecorator} = form;
+
             return (
                 <Modal
                     visible={visible}
@@ -22,19 +23,26 @@ const CollectionCreateForm = Form.create()(
                     <Form layout="vertical">
                         <FormItem label="标题">
                             {getFieldDecorator('title', {
-                                rules: [{ required: true, message: '标题不能为空!' }],
+                                rules: [{required: true, message: '标题不能为空!'}],
+                            })(
+                                <Input className="form-title"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="位置">
+                            {getFieldDecorator('location', {
+                                rules: [{required: true, message: '地址不能为空!'}],
                             })(
                                 <Input className="form-title"/>
                             )}
                         </FormItem>
                         <FormItem label="摘要">
-                            {getFieldDecorator('summary',)(<Input type="textarea" className="form-summary"/>)}
+                            {getFieldDecorator('summary')(<Input type="textarea" className="form-summary"/>)}
                         </FormItem>
                         <FormItem label="足迹">
-                            {getFieldDecorator('content',)(<Input type="textarea" className="form-content"/>)}
+                            {getFieldDecorator('content')(<Input type="textarea" className="form-content"/>)}
                         </FormItem>
                         <FormItem label="图片">
-                            <Uploade/>
+                            <Uploade uploadMethod={uploadMethod}/>
                         </FormItem>
 
 
@@ -56,14 +64,19 @@ const CollectionCreateForm = Form.create()(
 );
 
 export default class CollectionsPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+    }
+
     state = {
         visible: false,
     };
     showModal = () => {
-        this.setState({ visible: true });
+        this.setState({visible: true});
     }
     handleCancel = () => {
-        this.setState({ visible: false });
+        this.setState({visible: false});
     }
     handleCreate = () => {
         const form = this.formRef.props.form;
@@ -72,19 +85,32 @@ export default class CollectionsPage extends React.Component {
                 return;
             }
 
-            console.log('Received values of form: ', values);
+            console.log('Received values of form: ', values)
+            // this.uploadMethod();
             form.resetFields();
-            this.setState({ visible: false });
+            this.setState({visible: false});
         });
-    }
+    };
+
+    uploadMethod = (path) => {
+        this.setState({
+            path: path
+        });
+        console.log("11111111")
+        console.log(this.state.path);
+    };
+
     saveFormRef = (formRef) => {
         this.formRef = formRef;
-    }
+    };
+
     render() {
         return (
             <div className="add-foot">
-                <button type="primary" className="addBtn" onClick={this.showModal}><i className="mdui-icon material-icons">add</i></button>
+                <button type="primary" className="addBtn" onClick={this.showModal}><i
+                    className="mdui-icon material-icons">add</i></button>
                 <CollectionCreateForm
+                    uploadMethod={this.uploadMethod}
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}

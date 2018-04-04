@@ -24,23 +24,14 @@ export default class My extends Component {
         }
     }
 
-    //锚点设置
-    scrollToAnchor = (anchorName) => {
-        this.showItem();
-        if (anchorName) {
-            let anchorElement = document.getElementById(anchorName);
-            if (anchorElement) {
-                anchorElement.scrollIntoView();
-            }
-        }
-    }
-
-
-
     componentWillMount() {
 
-
     };
+
+    jumpTo=(to)=>{
+        hashHistory.push("/"+to);
+    }
+
 
     render() {
         const {one} = this.props;
@@ -53,22 +44,22 @@ export default class My extends Component {
             <div className="my">
                 {/*<Login/>*/}
                 <div className="main">
-                    <div className="top">
+                    <div className="top" >
                         <div className="content">
-                            <Link to="setting ">
+                            <Link to="setting">
                                 <i className="mdui-icon material-icons">settings</i>
                             </Link>
                             <div className="avatar mdui-center">
                                 <img className="mdui-img-circle" src={avatorPic}/>
                             </div>
                             <div className="nickname mdui-center">
-                                <p className="nc">这是昵称 <div className="sex"> ♂ </div></p>
+                                <p className="nc">这是昵称</p>
                             </div>
                         </div>
                     </div>
                     <div className="main-bottom">
                         <ul className="mdui-list">
-                            <li className="mdui-list-item mdui-ripple">
+                            <li className="mdui-list-item mdui-ripple" onClick={()=>this.jumpTo("messages")}>
                                 <div className="mdui-list-item-content">
                                     <i className="mdui-list-item-icon mdui-icon material-icons">message</i>
                                     <p className="list-p">消息</p>
@@ -76,14 +67,13 @@ export default class My extends Component {
                                 <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
                             </li>
                             <hr/>
-                            <li className="mdui-list-item mdui-ripple">
+                            <li className="mdui-list-item mdui-ripple" onClick={()=>this.jumpTo("focus")}>
                                 <div className="mdui-list-item-content">
                                     <i className="mdui-list-item-icon mdui-icon material-icons">star</i>
                                     <p className="list-p">关注</p>
                                 </div>
                                 <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
                             </li>
-                            <hr/>
                             <hr/>
                             <li className="mdui-list-item mdui-ripple">
                                 <div className="mdui-list-item-content">

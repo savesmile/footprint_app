@@ -1,5 +1,6 @@
 import { Upload, Icon, message } from 'antd';
 import React, {Component} from "react"
+
 function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -19,6 +20,11 @@ function beforeUpload(file) {
 }
 
 export default class Uploade extends Component {
+
+    constructor(props){
+        super(props)
+    }
+
     state = {
         loading: false,
     };
@@ -33,10 +39,12 @@ export default class Uploade extends Component {
                 imageUrl,
                 loading: false,
             }));
-            console.log(info.file.response);
+            this.props.uploadMethod(info.file.response);
+            //
         }
     }
     render() {
+
         const uploadButton = (
             <div className="uploadBtn">
                 <Icon type={this.state.loading ? 'loading' : 'plus'} />

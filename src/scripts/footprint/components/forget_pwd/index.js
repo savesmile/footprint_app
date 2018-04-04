@@ -75,7 +75,6 @@ export default class Forget_pwd extends Component {
                 </button>
                 <button className="authCodeBtn mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-grey-300
                              mdui-color-theme-accent mdui-ripple mdui-center"
-                        style={{top: "163px"}}
                         onClick={this.authCodeBtnClick}>
                     验 证 码
                 </button>
