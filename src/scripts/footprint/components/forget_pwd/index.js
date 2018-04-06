@@ -7,8 +7,6 @@ import {connect} from "react-redux"
 import Back from "../back";
 //import {get_insert_detail} from "../../actions";
 
-axios.defaults.baseURL = "http://39.106.19.127:3000"
-// axios.defaults.baseURL = "http://localhost:3000";
 @connect(
     (state) => ({...state})
 )
@@ -19,7 +17,22 @@ export default class Forget_pwd extends Component {
             authCode: null,
         }
     }
+    handleSubmit=()=>{
+        console.log(this.refs.username.value)
+        var pwd = this.refs.pwd.value;
+        var username = this.refs.username.value
 
+        // this.fetchPost("http://192.168.0.105:20000/api/user/sign-in",{
+        //     phone:this.refs.username.value,
+        //     password:this.refs.pwd.value
+        // },json=>{
+        //     if(json.code==0){
+        //         sessionStorage.setItem("token",json.data.token);
+        //         hashHistory.push("/his");
+        //     }
+        // })
+        
+    }
     authCodeBtnClick = () => {
         let authCode = Array();
         for (let i = 0; i <= 3; i++) {
@@ -47,12 +60,14 @@ export default class Forget_pwd extends Component {
 
         return (
             <div className="forgetPwd">
-                <Back backTo="my" header="reset password"/>
+                <Back backTo="login" header="reset password"/>
                 <div className="mdui-container">
                     <div className="mdui-textfield mdui-textfield-floating-label">
                         <i className="mdui-icon material-icons">account_circle</i>
                         <label className="mdui-textfield-label">Username</label>
-                        <input className="mdui-textfield-input" type="text" required ref="username"/>
+                        <input className="mdui-textfield-input" type="text" required ref="username" pattern="/^1[3|4|5|7|8][0-9]{9}$/"/>
+                        <div className="mdui-textfield-error" >请输入正确的11位的电话号</div>
+
                     </div>
                     <div className="mdui-textfield mdui-textfield-floating-label authCode">
                         <i className="mdui-icon material-icons">message</i>

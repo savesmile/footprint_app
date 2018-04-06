@@ -1,52 +1,51 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import {hashHistory, Link} from "react-router"
-
+import Base from "../base";
 import axios from "axios"
 
 
-/* axios.defaults.baseURL = "http://39.106.19.127:3000" */
-/* axios.defaults.baseURL = "http://localhost:3000"; */
+// axios.defaults.baseURL = "http://192.168.0.105:20000"
 @connect(
     (state) => ({ ...state })
 )
 
 
-export default class Login extends Component {
+export default class Login extends Base {
     submit=()=>{
-      
-        axios.post("/findUser",{
-            phone:this.state.name
-        }).then(res=>{
-            if(this.state.pwd==res.data.pwd){
-                localStorage.setItem("name",this.state.name);
-                hashHistory.push("/one");
-               
-            }else{
-                layer.open({
-                    content: '用户名或密码错误',
-                    style: 'background-color:#ddd; color:orange; border:none;font-size:28px', //自定风格
-                    time: 2
-                  });
+        
+        var pwd = this.refs.pwd.value;
+        var username = this.refs.username.value
+
+        this.fetchPost("http://192.168.0.105:20000/api/user/sign-in",{
+            phone:this.refs.username.value,
+            password:this.refs.pwd.value
+        },json=>{
+            if(json.code==0){
+                sessionStorage.setItem("token",json.data.token);
+                hashHistory.push("/his");
             }
         })
+        
     }
+    
 
 
     render() {
         return (
-            <div className="login">  
-                <form name="loginMessages">
+            <div className="my">
+                <div className="login">  
+                <form name="loginMessages" onSubmit={this.submit}>
                     <div className="mdui-container">
                         <div className="mdui-textfield mdui-textfield-floating-label">
                             <i className="mdui-icon material-icons">account_circle</i>
                             <label className="mdui-textfield-label">Username</label>
-                            <input className="mdui-textfield-input" type="text" required />
+                            <input className="mdui-textfield-input" type="text" required ref="username"/>
                         </div>
                         <div className="mdui-textfield mdui-textfield-floating-label">
                             <i className="mdui-icon material-icons">lock</i>
                             <label className="mdui-textfield-label">Password</label>
-                            <input className="mdui-textfield-input" type="text" required />
+                            <input className="mdui-textfield-input" type="text" required ref="pwd"/>
                         </div>
                        
                     </div>
@@ -59,6 +58,7 @@ export default class Login extends Component {
                     <Link className="mdui-float-left" to={"/forget_pwd"}><small>forget password？</small></Link>
                     <Link className="mdui-float-right" to={"/register"}><small>registered</small></Link>
                 </div>
+            </div>
             </div>
         )
     }

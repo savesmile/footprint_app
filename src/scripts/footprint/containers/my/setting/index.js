@@ -3,8 +3,7 @@ import {connect} from "react-redux"
 import Foot from "../../../components/foot"
 import Back from "../../../components/back"
 import {Link, hashHistory} from "react-router"
-/* axios.defaults.baseURL = "http://39.106.19.127:3000" */
-/* axios.defaults.baseURL = "http://localhost:3000"; */
+
 @connect(
     (state) => ({...state})
 )
@@ -22,7 +21,24 @@ export default class Setting extends Component {
     resetPwdBtn=()=>{
         hashHistory.push("/forget_pwd");
     };
-
+    exit=()=>{
+        console.log(1111111111)
+        layer.open({
+            content: '确认要退出登录吗?'
+            ,btn: ['确认', '取消']
+            ,yes: function(index){
+              hashHistory.push("/login");
+              sessionStorage.clear();
+              localStorage.clear();
+              layer.close(index);
+            }
+          });
+        // layer.open({
+        //     content: '确认要退出登录吗?',
+        //     style: 'background-color:#ddd; color:orange; border:none;font-size:28px', //自定风格
+        //     time: 2
+        //   });
+    }
     render() {
 
         return (
@@ -39,7 +55,7 @@ export default class Setting extends Component {
                         </li>
                         <hr/>
                         <li className="mdui-list-item mdui-ripple">
-                            <div className="mdui-list-item-content">
+                            <div className="mdui-list-item-content" onClick={this.exit}>
                                 <i className="mdui-list-item-icon mdui-icon material-icons">keyboard_return</i>
                                 <p className="list-p">退出登录</p>
                             </div>

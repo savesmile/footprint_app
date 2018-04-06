@@ -10,8 +10,6 @@ import {get_one, get_user_detail} from "../../actions"
 import axios from "axios"
 import avatorPic from "../../../../assets/images/avator1.png"
 import Foot from "../../components/foot"
-/* axios.defaults.baseURL = "http://39.106.19.127:3000" */
-/* axios.defaults.baseURL = "http://localhost:3000"; */
 
 @connect(
     (state) => ({...state})

@@ -12,7 +12,7 @@ import Detail from "../components/detail"
 import Setting from "./my/setting"
 import Focus from "../components/focus"
 import Messages from "../components/message";
-
+import Login from "../components/login"
 
 export default class Layout extends Component {
     render() {
@@ -30,6 +30,7 @@ export default class Layout extends Component {
                     <Route path="/detail" component={Detail}/>
                     <Route path="/focus" component={Focus}/>
                     <Route path="/messages" component={Messages}/>
+                    <Route path="/login" component={Login}/>
                 </Route>
             </Router>
         )

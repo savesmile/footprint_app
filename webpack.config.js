@@ -79,9 +79,5 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
 
     ],
-    resolve: {
-		alias: {   //别名
-		'vue': 'vue/dist/vue.js'
-		}
-	},
+    
 }
