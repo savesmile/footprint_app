@@ -58,7 +58,7 @@ export default class Uploade extends Component {
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="//jsonplaceholder.typicode.com/posts/"
+                action="http:192.168.0.105:20000/api/common/uploadByBase64"
                 beforeUpload={beforeUpload}
                 onChange={this.handleChange}
             >

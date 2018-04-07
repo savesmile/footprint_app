@@ -3,7 +3,7 @@ import {connect} from "react-redux"
 import {hashHistory, Link} from "react-router"
 import Base from "../base";
 import axios from "axios"
-
+import Back from "../back";
 
 // axios.defaults.baseURL = "http://192.168.0.105:20000"
 @connect(
@@ -35,6 +35,7 @@ export default class Login extends Base {
         return (
             <div className="my">
                 <div className="login">  
+                <Back backTo="his" header="Login"/>
                 <form name="loginMessages" onSubmit={this.submit}>
                     <div className="mdui-container">
                         <div className="mdui-textfield mdui-textfield-floating-label">

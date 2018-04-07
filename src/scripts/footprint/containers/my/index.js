@@ -16,7 +16,7 @@ export default class My extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            token: "test_token"
+            token: sessionStorage.token
         }
     }
 
@@ -27,7 +27,13 @@ export default class My extends Component {
     jumpTo=(to)=>{
         hashHistory.push("/"+to);
     }
-
+    handleClick=(e)=>{
+        if(sessionStorage.token){
+            e.preventDefault();
+        }else{
+            hashHistory.push("/login")
+        }
+    }
 
     render() {
         const {one} = this.props;
@@ -42,11 +48,11 @@ export default class My extends Component {
                 <div className="main">
                     <div className="top" >
                         <div className="content">
-                            <Link to="setting">
+                            <Link to="setting" style={{display:this.state.token?"block":"none"}}>
                                 <i className="mdui-icon material-icons">settings</i>
                             </Link>
                             <div className="avatar mdui-center">
-                                <img className="mdui-img-circle" src={avatorPic}/>
+                                <img className="mdui-img-circle" src={avatorPic} onClick={this.handleClick}/>
                             </div>
                             <div className="nickname mdui-center">
                                 <p className="nc">这是昵称</p>

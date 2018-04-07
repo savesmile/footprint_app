@@ -7,18 +7,51 @@ import Back from "../back"
 import {Tabs} from 'antd';
 import avatorPic2 from "../../../../assets/images/avator2.jpg"
 import nonePic from "../../../../assets/images/none.png"
-
+import Base from "../base";
 const TabPane = Tabs.TabPane;
 
 @connect(
     (state) => ({...state})
 )
-export default class Focus extends Component {
+export default class Focus extends Base {
+    constructor(props){
+        super(props);
+        this.state={
+            token:sessionStorage.token,
+            focusList:[],
+            followList:[]
+        }
+    }
     jumpToFoot = (uid) => {
         hashHistory.push("/my_foot/" + uid)
     };
-
+    componentDidMount=()=>{
+        this.getFocusList();
+    }
+    //获取关注列表
+    getFocusList =()=>{
+        this.fetchGet("http://192.168.0.105:20000/api/user/my-focus?token="+this.state.token,json=>{
+            console.log(json);
+            if(json.code==0){
+                this.setState({
+                    focusList:json.data 
+                })
+            }
+        })
+    }
+    //获取关注列表
+    getFollowList =()=>{
+        this.fetchGet("http://192.168.0.105:20000/api/user/my-follow?token="+this.state.token,json=>{
+            console.log(json);
+            if(json.code==0){
+                this.setState({
+                    followList:json.data 
+                })
+            }
+        })
+    }
     render() {
+        const{focusList,followList} = this.state;
         var focus = (
             <div className="detail-component-content">
                 <ul className="mdui-list">
