@@ -2,6 +2,7 @@ import {Modal, Form, Input, Radio} from 'antd';
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import Uploade from "../upload"
+import Base from "../../components/base";
 
 const FormItem = Form.Item;
 
@@ -63,13 +64,14 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-export default class CollectionsPage extends React.Component {
+export default class CollectionsPage extends Base {
     constructor(props) {
         super(props);
 
     }
 
     state = {
+        token: sessionStorage.token,
         visible: false,
     };
     showModal = () => {
@@ -79,24 +81,39 @@ export default class CollectionsPage extends React.Component {
         this.setState({visible: false});
     }
     handleCreate = () => {
+        const {dataChange} = this.props;
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
-
+            var url = "http://192.168.0.105:20000/api/comment/article?token=" + this.state.token;
             console.log('Received values of form: ', values)
-            // this.uploadMethod();
-            form.resetFields();
+            this.fetchPost(url, {
+                title: values.title,
+                summary: values.summary,
+                location: values.location,
+                content: values.content,
+                secret: values.modifier === "public" ? false : true,
+                imgPath: this.state.path
+            }, json => {
+                if (json.code == 0) {
+                    dataChange()
+                    this.setState({
+                        timeLine: json.data
+                    })
+                }
+            })
+
+            //form.resetFields();
             this.setState({visible: false});
         });
     };
 
     uploadMethod = (path) => {
         this.setState({
-            path: path
+            path: path.data.imagePath
         });
-        console.log("11111111")
         console.log(this.state.path);
     };
 
@@ -112,6 +129,7 @@ export default class CollectionsPage extends React.Component {
                 <CollectionCreateForm
                     uploadMethod={this.uploadMethod}
                     wrappedComponentRef={this.saveFormRef}
+
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}

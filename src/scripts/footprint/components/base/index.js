@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import ReactDOM from "react-dom";
+import {hashHistory} from "react-router"
 import "whatwg-fetch";
 import "core-js/es6/promise"
 
@@ -23,6 +23,11 @@ export default class Base extends Component{
                 hasCanceled = true;
             }
         }
+    }
+
+    //返回上一级
+    hashHistoryBack=()=>{
+        hashHistory.goBack();
     }
 
     fetchPost=(url,obj,cb)=>{

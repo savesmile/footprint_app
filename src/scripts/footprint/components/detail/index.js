@@ -1,33 +1,35 @@
 import React, {Component} from "react"
-import {Link} from "react-router"
 import {connect} from "react-redux"
-import Back from "../back"
-import ExamplePic from "../../../../assets/images/example.jpg"
-import avatorPic from "../../../../assets/images/avator1.png"
-import avatorPic2 from "../../../../assets/images/avator2.jpg"
+import {hashHistory} from "react-router";
 import QueueAnim from 'rc-queue-anim';
 import Foot from "../foot"
+import Base from "../../components/base"
 
 @connect(
     (state) => ({...state})
 )
-export default class Detail extends Component {
+export default class Detail extends Base {
     constructor(props) {
         super(props);
-        var {userId,articleId} = this.props.location.state;
+        var {articleId} = this.props.location.state;
         this.state = {
             title: "Canada",
             componentState: false,
-            articleId:articleId,
-            userId:userId
+            articleId: articleId,
+            token: sessionStorage.token,
+            focused: false,
+            dataList: {},
+            commentList: []
         };
 
     }
 
     componentWillMount() {
-       //此处请求带articleId 的文章详情
+        //此处请求带articleId 的文章详情
+        this.getData();
         console.log(this.state)
     }
+
     componentClick = () => {
         var cs = !this.state.componentState;
         this.setState({
@@ -35,105 +37,188 @@ export default class Detail extends Component {
         });
     };
 
-    takeCommentBtn = ()=>{
+    takeCommentBtn = () => {
         var comment = this.refs.comment.value;
-        if (!comment){
-            console.log('comment is required!');
+        if (!comment) {
             return false;
         }
+        if (!this.state.token) {
+            layer.open({
+                content: '请登录'
+                , btn: ['确认', '取消']
+                , yes: function (index) {
+                    hashHistory.push("/login");
+                    layer.close(index);
+                }
+            });
+            return;
+        }
         //此处进行post请求
-
+        this.fetchPost("http://192.168.0.105:20000/api/comment?token=" + this.state.token, {
+            articleId: this.state.articleId,
+            toUserId: this.state.dataList.article.authorId,
+            comment: this.refs.comment.value
+        }, json => {
+            if (json.code == 0) {
+                layer.open({
+                    content: '评论成功'
+                    , skin: 'msg'
+                    , time: 3 //2秒后自动关闭
+                });
+                this.refs.comment.value = '';
+                this.getData();
+            }
+        })
     };
 
+    focus = () => {
+        if (this.state.dataList.focus) {
+            //询问框
+            layer.open({
+                content: '您确定要取消关注吗？'
+                , btn: ['确定', '不要']
+                , yes: function (index) {
+                    //在此请求取消关注接口
+                    console.log("取消关注.")
+                    layer.close(index);
+                }
+            });
+        } else {
+
+            //在此请求关注接口
+            this.fetchPost("http://192.168.0.105:20000/api/user/focus?token=" + this.state.token, {
+                focusUserId: this.state.dataList.article.authorId,
+            }, json => {
+                console.log(json)
+                if (json.code == 0) {
+                    console.log(json)
+                    layer.open({
+                        content: '关注成功'
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                    this.getData();
+                }
+            })
+
+        }
+    };
+    getData = () => {
+        var uri = "http://192.168.0.105:20000/api/comment/article/detail?article-id=" + this.state.articleId;
+        if (sessionStorage.token) {
+            uri += "&token=" + sessionStorage.token;
+        }
+        this.fetchGet(uri, json => {
+            console.log(json);
+            if (json.code == 0) {
+                this.setState({
+                    dataList: json.data,
+                })
+            }
+        })
+        this.fetchGet("http://192.168.0.105:20000/api/comment/list?article_id=" + this.state.articleId, json => {
+            console.log(json.data);
+            if (json.code == 0) {
+                this.setState({
+                    commentList: json.data
+                })
+            }
+        })
+    };
+
+
     render() {
-        var component = (<div className="detail-component-content" key="demo2">
-            <ul className="mdui-list">
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title"><p>Brunch <span>2018-04-03</span></p>
+        const {dataList, commentList} = this.state;
+        console.log(dataList);
+        var content = null;
+        var component = null
+        if (dataList.article) {
+
+            content = <div>
+                <div ref="detail">
+                    <div className="detail-foot">
+
+                        <div className="avatar">
+                            <img className="mdui-img-circle" src={dataList.article.avatarPath}/>
                         </div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - I'll be in your neighborhood ...
+                        <div className="detail-foot-author">
+                            <p>{dataList.article.authorName}</p>
+                            <span>{this.timestampToTime(dataList.article.createTime)}</span>
                         </div>
-                    </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title"><p>Brunch <span>2018-04-03</span></p>
-                        </div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - I'll be in your neighborhood ...
-                        </div>
-                    </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title"><p>Brunch <span>2018-04-03</span></p>
-                        </div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - I'll be in your neighborhood ...
+                        <div className="detail-focus mdui-center" onClick={this.focus}>
+                            {dataList.focus ? <i className="mdui-icon material-icons focused">star</i>
+                                : <i className="mdui-icon material-icons">star_border</i>}
                         </div>
                     </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title"><p>Brunch <span>2018-04-03</span></p>
-                        </div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - I'll be in your neighborhood ...
-                        </div>
+                    <div className="mdui-typo">
+                        <blockquote>
+                            <p dangerouslySetInnerHTML={{
+                                __html: dataList.article.summary
+                            }}></p>
+                        </blockquote>
                     </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title"><p>Brunch <span>2018-04-03</span></p>
-                        </div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - I'll be in your neighborhood ...
-                        </div>
+                    <div className="detail-pic">
+                        <img src={dataList.article.imgPath}/>
                     </div>
-                </li>
+                    <div className="detail-content mdui-typo-body-2-opacity">
+                        <div className="mdui-typo" ref="content" dangerouslySetInnerHTML={{
+                            __html: dataList.article.content
+                        }}></div>
+                    </div>
+                </div>
+                <div className="detail-location">
+                    <p>{dataList.article.location}</p>
+                    <i className="mdui-icon material-icons">room</i>
+                </div>
 
 
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title">BBQ</div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - Wish I could ...
-                        </div>
+                <div className="detail-like">
+                    {dataList.likeAvatar ? dataList.likeAvatar.map((avatar, i) => {
+                        return (<div className="avatar" key={i}>
+                            <img className="mdui-img-circle" src={avatar}/>
+                        </div>);
+                    }) : ""}
+                    <div className="like mdui-center">
+                        {/*favorite*/}
+                        <i className="mdui-icon material-icons">favorite_border</i>
+                        <p>{dataList.article.likeCount}</p>
                     </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title">Oui</div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - Do you have Paris reco ...
+                </div>
+            </div>
+
+
+        }
+        if (commentList.length > 0) {
+            component = commentList.map((item, index) => {
+
+                return (
+
+
+                    <li className="mdui-list-item mdui-ripple" key={index}>
+                        <div className="mdui-list-item-avatar"><img src={item.avatarPath}/></div>
+                        <div className="mdui-list-item-content">
+                            <div className="mdui-list-item-title"><p>{item.avatarNickName}
+                                <span>{this.timestampToTime(item.createDate)}</span></p>
+                            </div>
+                            <div className="mdui-list-item-text mdui-list-item-one-line">
+                                {item.comment}
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li className="mdui-list-item mdui-ripple">
-                    <div className="mdui-list-item-avatar"><img src={avatorPic2}/></div>
-                    <div className="mdui-list-item-content">
-                        <div className="mdui-list-item-title">Oui</div>
-                        <div className="mdui-list-item-text mdui-list-item-one-line">
-                            - Do you have Paris reco ...
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>);
+                    </li>
+
+
+                );
+
+            })
+
+
+        }
 
         var inputBtn = (<div className="takeComment" key="demo1">
                 <div className="mdui-textfield">
                     <textarea className="mdui-textfield-input" placeholder="说点什么吧" ref="comment"></textarea>
-                    <div className="sendBtn" onClick={this.takeCommentBtn}><i className="mdui-icon material-icons">near_me</i></div>
+                    <div className="sendBtn" onClick={this.takeCommentBtn}><i
+                        className="mdui-icon material-icons">near_me</i></div>
                 </div>
             </div>
         );
@@ -141,71 +226,14 @@ export default class Detail extends Component {
 
         return (
             <div className="foot-detail">
-                <Back backTo={"my_foot/"+this.state.userId} header={this.state.title}/>
+                <div className="back mdui-center">
+                    <div className="backIcon" onClick={this.hashHistoryBack}>
+                        <i className="mdui-icon material-icons">keyboard_arrow_left</i>
+                    </div>
+                    <div className="backHeader mdui-center mdui-text-center mdui-text-uppercase">header</div>
+                </div>
                 <div className="mdui-container">
-                    <div ref="detail">
-                        <div className="detail-foot">
-
-                            <div className="avatar">
-                                <img className="mdui-img-circle" src={avatorPic}/>
-                            </div>
-                            <div className="detail-foot-author">
-                                <p>这是昵称</p>
-                                <span>2018-04-03 15:20:25</span>
-                            </div>
-                            <div className="detail-focus mdui-center">
-                                <i className="mdui-icon material-icons focused">star</i>
-                                {/*<i className="mdui-icon material-icons">star_border</i>*/}
-                            </div>
-                        </div>
-                        <div className="mdui-typo">
-                            <blockquote>
-                                <p>无论走到哪里，都应该记住，过去都是假的，回忆是一条没有尽头的路，一切以往的春天都不复存在，就连那最坚韧而又狂乱的爱情归根结底也不过是一种转瞬即逝的现实。</p>
-                            </blockquote>
-                        </div>
-                        <div className="detail-pic">
-                            <img src={ExamplePic}/>
-                        </div>
-                        <div className="detail-content mdui-typo-body-2-opacity">
-                            <div className="mdui-typo">
-                                在曼谷迷路了，只能拿着酒店的卡片问路。结果上来一个衣着整齐但是不会说英语的小帅哥，生生把我送回酒店。后来酒店的人说，他家住在曼谷的另外一边，就是来送我的。<br/>
-                                在美帝坐火车出去玩，回来的时候木有定出租，没办法走回宾馆（还没带手机。。非常脑残）。只能去附近的居民家求助。男主人很好心的开车送我回了宾馆。<br/>
-                                在美帝出去玩，碰到下雨没带雨具。看到有人穿一次性雨衣，上前打听那里能买到。结果他们要我陪他们走到车子（大概100米），然后把雨衣送给我了。<br/>
-                                晚上去听普林斯顿的学生音乐剧，卖票的小哥坚持要我买本校学生票，生生比外国非学生便宜一半。演出结束之后帮我叫出租车，还打电话到酒店确认我安全到了。<br/>
-                                去印尼泗水转机，完全没定住宿没看一眼攻略，只能跟着机场大巴去城里。碰到家境贫寒的华裔大叔，带我去家里吃饭还送礼物。<br/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="detail-location">
-                        <p>Canada # Ottawa</p>
-                        <i className="mdui-icon material-icons">room</i>
-                    </div>
-                    <div className="detail-like">
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-                        <div className="avatar">
-                            <img className="mdui-img-circle" src={avatorPic2}/>
-                        </div>
-
-                        <div className="like mdui-center">
-                            {/*favorite*/}
-                            <i className="mdui-icon material-icons">favorite_border</i>
-                            <p>5555</p>
-                        </div>
-                    </div>
+                    {content}
 
                     <div className="detail-component">
                         <div className="component-title" onClick={this.componentClick}>
@@ -213,12 +241,15 @@ export default class Detail extends Component {
                                 <i className="mdui-icon material-icons">
                                     {this.state.componentState === true ? "expand_more" : "expand_less"}
                                 </i>
-                                评论 1254
+                                评论 {this.state.commentList.length}
                             </p>
                         </div>
                         <QueueAnim>
-                        {this.state.componentState === true ? component : ""}
-                        {this.state.componentState === true ? inputBtn : ""}
+                            {this.state.componentState === true ?
+                                <div className="detail-component-content" key="demo2">
+                                    <ul className="mdui-list"> {component} </ul>
+                                </div> : ""}
+                            {this.state.componentState === true ? inputBtn : ""}
                         </QueueAnim>
                     </div>
                 </div>

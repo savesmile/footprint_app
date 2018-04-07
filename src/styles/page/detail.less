@@ -12,7 +12,7 @@
 
   .detail-foot {
     margin: 100px 0 20px 0;
-    border-bottom: 2px solid rgba(0,0,0,.12);
+    border-bottom: 2px solid rgba(0, 0, 0, .12);
     position: relative;
     vertical-align: baseline;
     .avatar {
@@ -74,39 +74,40 @@
     .like {
       float: right;
       color: grey;
-      i{
+      i {
         display: block;
         color: darkgray;
       }
-      p{
+      p {
+        text-align: center;
         display: block;
       }
     }
   }
-  .detail-location{
+  .detail-location {
     color: grey;
 
-    i{
+    i {
       float: left;
       font-size: 50px;
       display: inline-block;
     }
-    p{
+    p {
 
       font-size: 50px;
       display: inline-block;
       line-height: 60px;
     }
   }
-  .detail-component{
+  .detail-component {
     margin-top: 40px;
     margin-bottom: 300px;
-    .component-title{
+    .component-title {
       background-color: #efefef;
       height: 100px;
       text-align: center;
       padding-top: 25px;
-      p{
+      p {
         width: auto;
         display: inline-block;
         color: grey;
@@ -114,15 +115,15 @@
       }
     }
 
-    .mdui-list-item{
+    .mdui-list-item {
       padding: 0;
-      border-bottom: 2px solid rgba(0,0,0,.12) ;
-      .mdui-list-item-content{
+      border-bottom: 2px solid rgba(0, 0, 0, .12);
+      .mdui-list-item-content {
         padding-bottom: 10px;
         padding-top: 15px;
-        .mdui-list-item-title{
+        .mdui-list-item-title {
           position: relative;
-          span{
+          span {
             font-size: 38px;
             position: absolute;
             right: 15px;
@@ -134,33 +135,51 @@
     }
 
   }
-  .takeComment{
+  .takeComment {
     position: fixed;
     width: 92%;
     bottom: 140px;
-    .mdui-textfield{
+    .mdui-textfield {
       position: relative;
       background-color: white;
-      .mdui-textfield-input{
+      .mdui-textfield-input {
         font-size: 40px;
       }
-      .sendBtn{
+      .sendBtn {
 
         width: 40px;
         height: 40px;
         position: absolute;
-        right:60px;
-        i{
+        right: 60px;
+        i {
           font-size: 80px;
         }
 
       }
 
-      .mdui-textfield-input:hover{
+      .mdui-textfield-input:hover {
         border-bottom-color: #17c052;
-        box-shadow:0 1px 0 0  #17c052;
+        box-shadow: 0 1px 0 0 #17c052;
       }
     }
   }
+  .back {
+    padding-top: 50px;
+    width: 95%;
+    .backIcon {
+      width: 100px;
+      float: left;
+      i {
+        font-size: 120px;
+        color: grey;
+      }
 
+    }
+    .backHeader {
+      width: 80%;
+      height: 120px;
+      font-size: large;
+      line-height: 120px;
+    }
+  }
 }

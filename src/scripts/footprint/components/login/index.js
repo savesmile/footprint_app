@@ -2,7 +2,6 @@ import React, {Component} from "react"
 import {connect} from "react-redux"
 import {hashHistory, Link} from "react-router"
 import Base from "../base";
-import axios from "axios"
 import Back from "../back";
 
 // axios.defaults.baseURL = "http://192.168.0.105:20000"
@@ -46,7 +45,7 @@ export default class Login extends Base {
                         <div className="mdui-textfield mdui-textfield-floating-label">
                             <i className="mdui-icon material-icons">lock</i>
                             <label className="mdui-textfield-label">Password</label>
-                            <input className="mdui-textfield-input" type="text" required ref="pwd"/>
+                            <input className="mdui-textfield-input" type="password" required ref="pwd"/>
                         </div>
                        
                     </div>
