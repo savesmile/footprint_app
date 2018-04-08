@@ -1,17 +1,17 @@
-import React, {Component} from "react"
-import {connect} from "react-redux"
-import {hashHistory} from "react-router";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { hashHistory } from "react-router";
 import QueueAnim from 'rc-queue-anim';
 import Foot from "../foot"
 import Base from "../../components/base"
 
 @connect(
-    (state) => ({...state})
+    (state) => ({ ...state })
 )
 export default class Detail extends Base {
     constructor(props) {
         super(props);
-        var {articleId} = this.props.location.state;
+        var { articleId } = this.props.location.state;
         this.state = {
             title: "Canada",
             componentState: false,
@@ -72,19 +72,41 @@ export default class Detail extends Base {
     };
 
     focus = () => {
+        if (!this.state.token) {
+            layer.open({
+                content: '请登录'
+                , btn: ['确认', '取消']
+                , yes: function (index) {
+                    hashHistory.push("/login");
+                    layer.close(index);
+                }
+            });
+            return;
+        }
         if (this.state.dataList.focus) {
             //询问框
             layer.open({
                 content: '您确定要取消关注吗？'
                 , btn: ['确定', '不要']
-                , yes: function (index) {
-                    //在此请求取消关注接口
-                    console.log("取消关注.")
+                , yes: (index) => {
+                    this.fetchPost("http://192.168.0.105:20000/api/user/un-focus?token=" + this.state.token, {
+                        focusUserId: this.state.dataList.article.authorId,
+                    }, json => {
+                        console.log(json)
+                        if (json.code == 0) {
+                            console.log(json)
+                            layer.open({
+                                content: '取消成功'
+                                , skin: 'msg'
+                                , time: 2 //2秒后自动关闭
+                            });
+                            this.getData();
+                        }
+                    })
                     layer.close(index);
                 }
             });
         } else {
-
             //在此请求关注接口
             this.fetchPost("http://192.168.0.105:20000/api/user/focus?token=" + this.state.token, {
                 focusUserId: this.state.dataList.article.authorId,
@@ -103,11 +125,57 @@ export default class Detail extends Base {
 
         }
     };
+
+    unfocus = () => {
+        //在此请求取消关注接口
+        this.fetchPost("http://192.168.0.105:20000/api/user/un-focus?token=" + this.state.token, {
+            focusUserId: this.state.dataList.article.authorId,
+        }, json => {
+            console.log(json)
+            if (json.code == 0) {
+                console.log(json)
+                layer.open({
+                    content: '取消成功'
+                    , skin: 'msg'
+                    , time: 2 //2秒后自动关闭
+                });
+                this.getData();
+            }
+        })
+    }
+
+    like = () => {
+        if (!this.state.token) {
+            layer.open({
+                content: '请登录'
+                , btn: ['确认', '取消']
+                , yes: function (index) {
+                    hashHistory.push("/login");
+                    layer.close(index);
+                }
+            });
+            return;
+        }
+        var uri = "http://192.168.0.105:20000/api/comment/article/like?token=" + this.state.token + "&articleId=" + this.state.articleId;
+        if (this.state.dataList.article.like) {
+            uri += "&click_type=unlike";
+        } else {
+            uri += "&click_type=like";
+        }
+        this.fetchGet(uri, json => {
+            console.log(json)
+            if (json.code == 0) {
+                this.getData();
+            }
+        })
+
+    }
     getData = () => {
         var uri = "http://192.168.0.105:20000/api/comment/article/detail?article-id=" + this.state.articleId;
-        if (sessionStorage.token) {
-            uri += "&token=" + sessionStorage.token;
+        if (this.state.token) {
+            uri += "&token=" + this.state.token;
         }
+        console.log(uri);
         this.fetchGet(uri, json => {
             console.log(json);
             if (json.code == 0) {
@@ -128,7 +196,7 @@ export default class Detail extends Base {
 
 
     render() {
-        const {dataList, commentList} = this.state;
+        const { dataList, commentList } = this.state;
         console.log(dataList);
         var content = null;
         var component = null
@@ -139,7 +207,7 @@ export default class Detail extends Base {
                     <div className="detail-foot">
 
                         <div className="avatar">
-                            <img className="mdui-img-circle" src={dataList.article.avatarPath}/>
+                            <img className="mdui-img-circle" src={dataList.article.avatarPath} />
                         </div>
                         <div className="detail-foot-author">
                             <p>{dataList.article.authorName}</p>
@@ -158,7 +226,7 @@ export default class Detail extends Base {
                         </blockquote>
                     </div>
                     <div className="detail-pic">
-                        <img src={dataList.article.imgPath}/>
+                        <img src={dataList.article.imgPath} />
                     </div>
                     <div className="detail-content mdui-typo-body-2-opacity">
                         <div className="mdui-typo" ref="content" dangerouslySetInnerHTML={{
@@ -175,12 +243,11 @@ export default class Detail extends Base {
                 <div className="detail-like">
                     {dataList.likeAvatar ? dataList.likeAvatar.map((avatar, i) => {
                         return (<div className="avatar" key={i}>
-                            <img className="mdui-img-circle" src={avatar}/>
+                            <img className="mdui-img-circle" src={avatar} />
                         </div>);
                     }) : ""}
-                    <div className="like mdui-center">
-                        {/*favorite*/}
-                        <i className="mdui-icon material-icons">favorite_border</i>
+                    <div className="like mdui-center" onClick={this.like}>
+                        <i className="mdui-icon material-icons">{dataList.article.like ? "favorite" : "favorite_border"}</i>
                         <p>{dataList.article.likeCount}</p>
                     </div>
                 </div>
@@ -195,7 +262,7 @@ export default class Detail extends Base {
 
 
                     <li className="mdui-list-item mdui-ripple" key={index}>
-                        <div className="mdui-list-item-avatar"><img src={item.avatarPath}/></div>
+                        <div className="mdui-list-item-avatar"><img src={item.avatarPath} /></div>
                         <div className="mdui-list-item-content">
                             <div className="mdui-list-item-title"><p>{item.avatarNickName}
                                 <span>{this.timestampToTime(item.createDate)}</span></p>
@@ -215,12 +282,12 @@ export default class Detail extends Base {
         }
 
         var inputBtn = (<div className="takeComment" key="demo1">
-                <div className="mdui-textfield">
-                    <textarea className="mdui-textfield-input" placeholder="说点什么吧" ref="comment"></textarea>
-                    <div className="sendBtn" onClick={this.takeCommentBtn}><i
-                        className="mdui-icon material-icons">near_me</i></div>
-                </div>
+            <div className="mdui-textfield">
+                <textarea className="mdui-textfield-input" placeholder="说点什么吧" ref="comment"></textarea>
+                <div className="sendBtn" onClick={this.takeCommentBtn}><i
+                    className="mdui-icon material-icons">near_me</i></div>
             </div>
+        </div>
         );
 
 
@@ -253,7 +320,7 @@ export default class Detail extends Base {
                         </QueueAnim>
                     </div>
                 </div>
-                <Foot/>
+                <Foot />
             </div>
         )
     }

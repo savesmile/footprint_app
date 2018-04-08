@@ -47,6 +47,12 @@ export default class His extends Base {
         };
         hashHistory.push(path)
     }
+    jumpOther = (userId) => {
+        var path = {
+            pathname: '/my_foot/'+userId,
+        };
+        hashHistory.push(path)
+    }
 
     //获取最新列表
     getData = () => {
@@ -92,7 +98,7 @@ export default class His extends Base {
                     <div className="mdui-card" ref="card" key={index}>
                         <div className="mdui-card-media">
                             <div className="mdui-card-header">
-                                <img className="mdui-card-header-avatar" src={item.avatarPath}/>
+                                <img className="mdui-card-header-avatar" src={item.avatarPath} onClick={()=>this.jumpOther(item.authorId)}/>
                                 <div className="mdui-card-header-title">{item.authorName}</div>
                                 <div className="mdui-card-header-subtitle">{this.timestampToTime(item.createTime)}</div>
                             </div>
@@ -131,7 +137,7 @@ export default class His extends Base {
                     }
                 }}>
                     <TabPane tab="最新" key="1">{html}</TabPane>
-                    <TabPane tab="关注" key="2">ddd</TabPane>
+                    <TabPane tab="关注" key="2">{html}</TabPane>
                 </Tabs>
                 <Foot/>
             </div>

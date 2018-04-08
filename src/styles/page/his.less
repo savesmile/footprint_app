@@ -11,8 +11,15 @@
   .mdui-card{
     margin-bottom: 50px;
   }
-  .mdui-card-primary-title{
+  .mdui-card-primary-title,.mdui-card-primary-subtitle{
+    height: 100px;
+    overflow:hidden; /*超出宽度部分的隐藏*/
+    white-space:nowrap; /*文字不换行*/
+    text-overflow:ellipsis; /*超出则...代替*/
     width: auto;
+  }
+  .mdui-card-primary-subtitle{
+    height: 60px;
   }
   .mdui-card:first-child{
     margin-top: 150px;
