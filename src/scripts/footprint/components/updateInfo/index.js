@@ -12,50 +12,23 @@ const CollectionCreateForm = Form.create()(
         render() {
             const {visible, onCancel, onCreate, form, uploadMethod} = this.props;
             const {getFieldDecorator} = form;
-
             return (
                 <Modal
                     visible={visible}
-                    title="分享 足记"
-                    okText="Create"
+                    title="修改信息"
+                    okText="提交"
                     onCancel={onCancel}
                     onOk={onCreate}
                 >
                     <Form layout="vertical">
-                        <FormItem label="标题">
-                            {getFieldDecorator('title', {
-                                rules: [{required: true, message: '标题不能为空!'}],
-                            })(
-                                <Input className="form-title"/>
-                            )}
-                        </FormItem>
-                        <FormItem label="位置">
-                            {getFieldDecorator('location', {
-                                rules: [{required: true, message: '地址不能为空!'}],
-                            })(
-                                <Input className="form-title"/>
-                            )}
-                        </FormItem>
-                        <FormItem label="摘要">
-                            {getFieldDecorator('summary')(<Input type="textarea" className="form-summary"/>)}
-                        </FormItem>
-                        <FormItem label="足迹">
-                            {getFieldDecorator('content')(<Input type="textarea" className="form-content"/>)}
-                        </FormItem>
-                        <FormItem label="图片">
+                        <FormItem label="头像">
                             <Uploade uploadMethod={uploadMethod}/>
                         </FormItem>
-
-
-                        <FormItem className="collection-create-form_last-form-item form-radio">
-                            {getFieldDecorator('modifier', {
-                                initialValue: 'public',
-                            })(
-                                <Radio.Group>
-                                    <Radio value="public">公开</Radio>
-                                    <Radio value="private">私有</Radio>
-                                </Radio.Group>
-                            )}
+                        <FormItem label="昵称">
+                            {getFieldDecorator('nickName')(<Input type="textarea" className="form-summary"/>)}
+                        </FormItem>
+                        <FormItem label="简介">
+                            {getFieldDecorator('introduction')(<Input type="textarea" className="form-content"/>)}
                         </FormItem>
                     </Form>
                 </Modal>
@@ -63,16 +36,17 @@ const CollectionCreateForm = Form.create()(
         }
     }
 );
-
-export default class CollectionsPage extends Base {
+@connect(
+    (state) => ({ ...state })
+)
+export default class UpdateInfo extends Base {
     constructor(props) {
-        super(props);
-
+        super(props);    
     }
-
+    
     state = {
         token: sessionStorage.token,
-        visible: false,
+        visible: false
     };
     showModal = () => {
         this.setState({visible: true});
@@ -87,20 +61,17 @@ export default class CollectionsPage extends Base {
             if (err) {
                 return;
             }
-            var url = "http://47.95.121.41:20000/api/comment/article?token=" + this.state.token;
+            var url = "http://47.95.121.41:20000/api/user/info?token=" + this.state.token;
             console.log('Received values of form: ', values)
             this.fetchPost(url, {
-                title: values.title,
-                summary: values.summary,
-                location: values.location,
-                content: values.content,
-                secret: values.modifier === "public" ? false : true,
-                imgPath: this.state.path
+                nickName:values.nickName,
+                introduction:values.introduction,
+                avatar: this.state.path
             }, json => {
                 if (json.code == 0) {
-                    dataChange()
+                    dataChange();
                     this.setState({
-                        timeLine: json.data
+                        info: json.data
                     })
                 }
             })
@@ -129,7 +100,6 @@ export default class CollectionsPage extends Base {
                 <CollectionCreateForm
                     uploadMethod={this.uploadMethod}
                     wrappedComponentRef={this.saveFormRef}
-
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}

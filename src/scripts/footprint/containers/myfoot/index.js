@@ -57,7 +57,7 @@ export default class MyFoot extends Base {
 
 
     getData = () => {
-        var baseUri = "http://192.168.0.105:20000";
+        var baseUri = "http://47.95.121.41:20000";
         this.fetchGet(baseUri + "/api/comment/article/time-line?token=" + this.state.token, json => {
             if (json.code == 0) {
                 this.setState({
@@ -67,7 +67,7 @@ export default class MyFoot extends Base {
         });
     }
     getOtherData = () => {
-        var baseUri = "http://192.168.0.105:20000";
+        var baseUri = "http://47.95.121.41:20000";
         this.fetchGet(baseUri + "/api/comment/article/other-time-line?token=" + this.state.token+"&other-user-id="+this.state.userId, json => {
             if (json.code == 0) {
                 console.log(json.data)
@@ -96,7 +96,7 @@ export default class MyFoot extends Base {
                 content: '您确定要取消关注吗？'
                 , btn: ['确定', '不要']
                 , yes: (index) => {
-                    this.fetchPost("http://192.168.0.105:20000/api/user/un-focus?token=" + this.state.token, {
+                    this.fetchPost("http://47.95.121.41:20000/api/user/un-focus?token=" + this.state.token, {
                         focusUserId: this.state.userId,
                     }, json => {
                         console.log(json)
@@ -115,7 +115,7 @@ export default class MyFoot extends Base {
             });
         } else {
             //在此请求关注接口
-            this.fetchPost("http://192.168.0.105:20000/api/user/focus?token=" + this.state.token, {
+            this.fetchPost("http://47.95.121.41:20000/api/user/focus?token=" + this.state.token, {
                 focusUserId: this.state.userId,
             }, json => {
                 console.log(json)
@@ -192,7 +192,7 @@ export default class MyFoot extends Base {
                         </section>
                     </div>
                 </div>
-                {this.state.userId === "my"?<CollectionsPage dataChange={this.getData} />:""}
+                {this.state.userId === "my" && this.state.token?<CollectionsPage dataChange={this.getData} />:""}
                 <Foot />
             </div>
 

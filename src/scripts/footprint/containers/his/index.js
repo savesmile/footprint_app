@@ -4,7 +4,7 @@ import {hashHistory} from "react-router";
 import {Tabs} from 'antd';
 import Base from "../../components/base";
 import Foot from "../../components/foot"
-
+import nonePic from "../../../../assets/images/none.png"
 
 const TabPane = Tabs.TabPane;
 
@@ -18,7 +18,8 @@ export default class His extends Base {
         this.state = {
             flag: false,
             token: sessionStorage.token,
-            dataList: []
+            dataList: [],
+            status:true
         }
     }
 
@@ -56,9 +57,10 @@ export default class His extends Base {
 
     //获取最新列表
     getData = () => {
-        this.fetchGet("http://192.168.0.105:20000/api/comment/article", json => {
+        this.fetchGet("http://47.95.121.41:20000/api/comment/article", json => {
             if (json.code == 0) {
                 this.setState({
+                    status: true,
                     dataList: json.data
                 })
             }
@@ -67,6 +69,9 @@ export default class His extends Base {
     //获取关注列表
     interest = () => {
         if (!this.state.token) {
+            this.setState({
+                status: false
+            })
             layer.open({
                 content: '请登录'
                 , btn: ['确认', '取消']
@@ -78,21 +83,21 @@ export default class His extends Base {
             return;
         }
 
-        this.fetchGet("http://192.168.0.105:20000/api/comment/article?token=" + this.state.token + "&click_type=focus", json => {
-            console.log(json)
+        this.fetchGet("http://47.95.121.41:20000/api/comment/article?token=" + this.state.token + "&click_type=focus", json => {
             if (json.code == 0) {
                 this.setState({
-                    dataList: json.data
+                    dataList: json.data,
+                    status: true
                 })
             }
         })
     }
 
     render() {
-        const {dataList} = this.state;
+        const {dataList,status} = this.state;
         var html = null;
         var content = null;
-        if (dataList.length > 0) {
+        if (status &&dataList&&dataList.length > 0) {
             content = dataList.map((item, index) => {
                 return (
                     <div className="mdui-card" ref="card" key={index}>
@@ -119,9 +124,14 @@ export default class His extends Base {
                     </div>
                 )
             })
+            var none = (
+                <div className="">
+                    <img className="nonePic" src={nonePic} />
+                </div>
+            )
             html = (
                 <div>
-                    {content}
+                    {status&&this.state.dataList?content:none}
                 </div>
             );
         }

@@ -6,7 +6,7 @@ import avatorPic from "../../../../assets/images/avator1.png"
 import Base from "../../components/base"
 import { get_one, get_update_detail, get_user_detail, get_one_detail } from "../../actions"
 import axios from "axios"
-
+import UpdateInfo from "../../components/updateInfo"
 import Foot from "../../components/foot"
 @connect(
     (state) => ({ ...state })
@@ -22,7 +22,11 @@ export default class My extends Base {
     }
 
     componentWillMount() {
-        var baseUri = "http://192.168.0.105:20000";
+       this.gatDate();
+    };
+
+    gatDate=()=>{
+        var baseUri = "http://47.95.121.41:20000";
         this.fetchGet(baseUri + "/api/user/info?token=" + this.state.token, json => {
             if (json.code == 0) {
                 this.setState({
@@ -30,7 +34,7 @@ export default class My extends Base {
                 })
             }
         });
-    };
+    }
 
     jumpTo = (to) => {
         hashHistory.push("/" + to);
@@ -43,6 +47,10 @@ export default class My extends Base {
         }
     }
 
+    updateInfo = ()=>{
+        return 
+    }
+
     render() {
         const { info } = this.state;
         var avatar = null;
@@ -53,7 +61,8 @@ export default class My extends Base {
                         <img className="mdui-img-circle" src={info.avatar} />
                     </div>
                     <div className="nickname mdui-center">
-                        <p className="nc">{info.name}</p>
+                    <UpdateInfo dataChange={this.gatDate}/>
+                        <p className="nc">{info.name}  <i className="mdui-icon material-icons" onClick={this.updateInfo()}>edit</i></p>
                     </div>
                 </div>);
         }
@@ -101,7 +110,7 @@ export default class My extends Base {
                                     <i className="mdui-list-item-icon mdui-icon material-icons">help_outline</i>
                                     <p className="list-p">帮助</p>
                                 </div>
-                                <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+                                {/* <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i> */}
                             </li>
                             <hr />
 
@@ -110,7 +119,7 @@ export default class My extends Base {
                                     <i className="mdui-list-item-icon mdui-icon material-icons">lightbulb_outline</i>
                                     <p className="list-p">其它</p>
                                 </div>
-                                <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i>
+                                {/* <i className="mdui-list-item-icon mdui-icon material-icons">chevron_right</i> */}
                             </li>
                             <hr />
                         </ul>

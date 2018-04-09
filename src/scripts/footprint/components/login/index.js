@@ -4,7 +4,7 @@ import {hashHistory, Link} from "react-router"
 import Base from "../base";
 import Back from "../back";
 
-// axios.defaults.baseURL = "http://192.168.0.105:20000"
+// axios.defaults.baseURL = "http://47.95.121.41:20000"
 @connect(
     (state) => ({ ...state })
 )
@@ -16,7 +16,7 @@ export default class Login extends Base {
         var pwd = this.refs.pwd.value;
         var username = this.refs.username.value
 
-        this.fetchPost("http://192.168.0.105:20000/api/user/sign-in",{
+        this.fetchPost("http://47.95.121.41:20000/api/user/sign-in",{
             phone:this.refs.username.value,
             password:this.refs.pwd.value
         },json=>{

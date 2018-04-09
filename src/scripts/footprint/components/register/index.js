@@ -37,7 +37,7 @@ export default class Register extends Base {
     };
 
     submitResetPwdBtn = () => {
-        this.fetchPost("http://192.168.0.105:20000/api/user/sign-up",{
+        this.fetchPost("http://47.95.121.41:20000/api/user/sign-up",{
             phone:this.refs.username.value,
             password:this.refs.password.value
         },json=>{

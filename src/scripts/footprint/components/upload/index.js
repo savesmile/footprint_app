@@ -55,7 +55,7 @@ export default class Uploade extends Component {
         var data = {
             upload_type: "avatar"
         };
-        var uri = "http://192.168.0.105:20000/api/common/uploadByFile?type=article&token=" + this.state.token;
+        var uri = "http://47.95.121.41:20000/api/common/uploadByFile?type=article&token=" + this.state.token;
         const uploadButton = (
             <div className="uploadBtn">
                 <Icon type={this.state.loading ? 'loading' : 'plus'}/>

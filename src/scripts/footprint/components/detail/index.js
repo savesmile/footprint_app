@@ -54,7 +54,7 @@ export default class Detail extends Base {
             return;
         }
         //此处进行post请求
-        this.fetchPost("http://192.168.0.105:20000/api/comment?token=" + this.state.token, {
+        this.fetchPost("http://47.95.121.41:20000/api/comment?token=" + this.state.token, {
             articleId: this.state.articleId,
             toUserId: this.state.dataList.article.authorId,
             comment: this.refs.comment.value
@@ -89,7 +89,7 @@ export default class Detail extends Base {
                 content: '您确定要取消关注吗？'
                 , btn: ['确定', '不要']
                 , yes: (index) => {
-                    this.fetchPost("http://192.168.0.105:20000/api/user/un-focus?token=" + this.state.token, {
+                    this.fetchPost("http://47.95.121.41:20000/api/user/un-focus?token=" + this.state.token, {
                         focusUserId: this.state.dataList.article.authorId,
                     }, json => {
                         console.log(json)
@@ -108,7 +108,7 @@ export default class Detail extends Base {
             });
         } else {
             //在此请求关注接口
-            this.fetchPost("http://192.168.0.105:20000/api/user/focus?token=" + this.state.token, {
+            this.fetchPost("http://47.95.121.41:20000/api/user/focus?token=" + this.state.token, {
                 focusUserId: this.state.dataList.article.authorId,
             }, json => {
                 console.log(json)
@@ -126,23 +126,6 @@ export default class Detail extends Base {
         }
     };
 
-    unfocus = () => {
-        //在此请求取消关注接口
-        this.fetchPost("http://192.168.0.105:20000/api/user/un-focus?token=" + this.state.token, {
-            focusUserId: this.state.dataList.article.authorId,
-        }, json => {
-            console.log(json)
-            if (json.code == 0) {
-                console.log(json)
-                layer.open({
-                    content: '取消成功'
-                    , skin: 'msg'
-                    , time: 2 //2秒后自动关闭
-                });
-                this.getData();
-            }
-        })
-    }
 
     like = () => {
         if (!this.state.token) {
@@ -156,7 +139,7 @@ export default class Detail extends Base {
             });
             return;
         }
-        var uri = "http://192.168.0.105:20000/api/comment/article/like?token=" + this.state.token + "&articleId=" + this.state.articleId;
+        var uri = "http://47.95.121.41:20000/api/comment/article/like?token=" + this.state.token + "&articleId=" + this.state.articleId;
         if (this.state.dataList.article.like) {
             uri += "&click_type=unlike";
         } else {
@@ -171,7 +154,7 @@ export default class Detail extends Base {
 
     }
     getData = () => {
-        var uri = "http://192.168.0.105:20000/api/comment/article/detail?article-id=" + this.state.articleId;
+        var uri = "http://47.95.121.41:20000/api/comment/article/detail?article-id=" + this.state.articleId;
         if (this.state.token) {
             uri += "&token=" + this.state.token;
         }
@@ -184,7 +167,7 @@ export default class Detail extends Base {
                 })
             }
         })
-        this.fetchGet("http://192.168.0.105:20000/api/comment/list?article_id=" + this.state.articleId, json => {
+        this.fetchGet("http://47.95.121.41:20000/api/comment/list?article_id=" + this.state.articleId, json => {
             console.log(json.data);
             if (json.code == 0) {
                 this.setState({

@@ -19,7 +19,7 @@ export default class Forget_pwd extends Base {
     }
     handleSubmit=()=>{
 
-        this.fetchPost("http://192.168.0.105:20000/api/user/reset-pwd",{
+        this.fetchPost("http://47.95.121.41:20000/api/user/reset-pwd",{
             phone:this.refs.username.value,
             password:this.refs.pwd.value
         },json=>{
